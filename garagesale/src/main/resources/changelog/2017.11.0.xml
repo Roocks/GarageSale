@@ -1,0 +1,76 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+	<changeSet id="2017-11-01-0" author="w.zeller@online.de"
+		runInTransaction="true">
+
+
+		<!-- address -->
+		<createTable tableName="address">
+			<column autoIncrement="true" name="id" type="BIGINT"><constraints primaryKey="true" /></column>
+			<column name="country" type="varchar(20)"></column>
+			<column name="city" type="varchar(20)"></column>
+			<column name="street" type="varchar(30)"></column>
+			<column name="housenumber" type="varchar(10)"></column>
+			<column name="postcode" type="varchar(10)"></column>
+			<column name="additionalinfo" type="varchar(30)"></column>
+		</createTable>
+		
+		<!-- customer -->
+		<createTable tableName="customer">
+			<column autoIncrement="true" name="id" type="BIGINT">	<constraints primaryKey="true" /></column>
+			<column name="username" type="varchar(12)"></column>
+			<column name="password" type="varchar(12)"></column>
+			<column name="firstname" type="varchar(20)"></column>
+			<column name="secondname" type="varchar(20)"></column>
+			<column name="email" type="varchar(30)"></column>
+			<column name="address_id" type="BIGINT"><constraints foreignKeyName="address_fk1" referencedTableName="address" referencedColumnNames="id"/></column>
+			<column name="deliveryaddress_id" type="BIGINT"><constraints foreignKeyName="deliveryaddress_fk1" referencedTableName="address" referencedColumnNames="id"/></column>	
+		</createTable>
+
+		<!-- product -->
+		<createTable tableName="product">
+			<column autoIncrement="true" name="id" type="BIGINT"><constraints primaryKey="true" /></column>
+			<column name="name" type="varchar(20)"></column>
+			<column name="description" type="varchar(256)"></column>
+			<column name="price" type="decimal(19,4)"></column>
+			<column name="seller_id" type="BIGINT"></column>
+			<column name="buyer_id" type="BIGINT"></column>
+		</createTable>
+		
+		<!-- foto -->
+		<createTable tableName="foto">
+			<column autoIncrement="true" name="id" type="BIGINT"><constraints primaryKey="true" /></column>
+			<column name="foto" type="BLOB"></column>
+			<column name="product_id" type="BIGINT"><constraints foreignKeyName="product_fk1" referencedTableName="product" referencedColumnNames="id" deleteCascade="true"/></column>		
+		</createTable>
+
+		<!-- category -->
+		<createTable tableName="category">
+			<column name="id" type="BIGINT" autoIncrement="true"><constraints unique="true" primaryKey="true" /></column>
+			<column name="name" type="varchar(20)"></column>
+			<column name="description" type="varchar(128)"></column>
+		</createTable>
+
+		<createTable tableName="product_category">
+			<column name="product_id" type="BIGINT"><constraints foreignKeyName="product_fk2" referencedTableName="product" referencedColumnNames="id" /></column>
+			<column name="category_id" type="BIGINT"><constraints foreignKeyName="category_fk2"	referencedTableName="category" referencedColumnNames="id" /></column>
+		</createTable>
+		
+		<!-- parcel -->
+		<createTable tableName="parcel">
+			<column name="id" type="BIGINT" autoIncrement="true"><constraints unique="true" primaryKey="true" /></column>
+			<column name="timestamp" type="datetime"></column>
+			<column name="customer_id" type="BIGINT"><constraints foreignKeyName="customer_fk1" referencedTableName="customer" referencedColumnNames="id" deleteCascade="true"/></column>
+		</createTable>
+		
+		<createTable tableName="parcel_item">
+			<column name="id" type="BIGINT" autoIncrement="true"><constraints unique="true" primaryKey="true" /></column>
+			<column name="amount" type="int"></column>
+			<column name="parcel_id" type="BIGINT"><constraints foreignKeyName="parcel_fk1" referencedTableName="parcel" referencedColumnNames="id" deleteCascade="true"/></column>
+			<column name="product_id" type="BIGINT"><constraints foreignKeyName="product_fk3" referencedTableName="product" referencedColumnNames="id" deleteCascade="true"/></column>
+		</createTable>
+
+	</changeSet>
+</databaseChangeLog>
