@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+	<changeSet id="2017-11-04-0" author="w.zeller@online.de"
+		runInTransaction="true">
+		
+		<!-- customer -->
+		<dropForeignKeyConstraint baseTableName="customer" constraintName="deliveryaddress_fk1"/>
+		<dropForeignKeyConstraint baseTableName="customer" constraintName="address_fk1"/>	
+		<dropColumn tableName="customer" columnName="deliveryaddress_id"></dropColumn>
+		<dropColumn tableName="customer" columnName="address_id"></dropColumn>	
+		<addColumn tableName="customer">
+			<column name="mainaddress_id" type="BIGINT"><constraints foreignKeyName="mainaddress_fk1" referencedTableName="address" referencedColumnNames="id"/></column>
+		</addColumn>
+		 
+		<!-- customer_address -->
+		<createTable tableName="customer_address">
+	    	<column name="customer_id" type="BIGINT"><constraints foreignKeyName="address_customer_fk1" referencedTableName="customer" referencedColumnNames="id"/></column>
+	    	<column name="address_id" type="BIGINT"><constraints foreignKeyName="customer_address_fk1" referencedTableName="address" referencedColumnNames="id"/></column>
+		</createTable>
+
+	</changeSet>
+</databaseChangeLog>

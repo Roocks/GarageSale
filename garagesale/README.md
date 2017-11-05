@@ -1,1 +1,1 @@
-Dieses Projekt ist ist ausschließlich für Übungszwecke gedacht.
+Dieses Projekt ist ausschließlich für Übungszwecke gedacht.

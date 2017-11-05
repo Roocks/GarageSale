@@ -1,25 +1,24 @@
-package de.roocks.garagesale.model;
+package de.roocks.garagesale.jpa;
 
-public class Item {
-private Long id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table (name = "parcel_item")
+public class ItemEntity {
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
 	
 	private int amount;
 	private Long parcel_id;
 	private Long product_id;
 	
-	public Item() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	public Item(Long id, int amount, Long parcel_id, Long product_id) {
-		super();
-		this.id = id;
-		this.amount = amount;
-		this.parcel_id = parcel_id;
-		this.product_id = product_id;
-	}
-
+	// getters/setters
 	public Long getId() {
 		return id;
 	}
