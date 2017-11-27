@@ -1,0 +1,17 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+	<changeSet id="2017-11-05-0" author="w.zeller@online.de"
+		runInTransaction="true">
+		
+		<!-- product -->
+		<dropColumn tableName="product" columnName="seller_id"></dropColumn>
+		<dropColumn tableName="product" columnName="buyer_id"></dropColumn>
+		<addColumn tableName="product">
+			<column name="seller_id" type="BIGINT"><constraints foreignKeyName="seller_fk1" referencedTableName="customer" referencedColumnNames="id"/></column>
+			<column name="buyer_id" type="BIGINT"><constraints foreignKeyName="buyer_fk1" referencedTableName="customer" referencedColumnNames="id"/></column>
+		</addColumn>
+
+	</changeSet>
+</databaseChangeLog>

@@ -5,6 +5,7 @@
     
     <include file="changelog/2017.11.0.xml" relativeToChangelogFile="true"/>
     <include file="changelog/2017.11.3.xml" relativeToChangelogFile="true"/>    
+    <include file="changelog/2017.11.5.xml" relativeToChangelogFile="true"/>    
+    <include file="changelog/2017.11.14.xml" relativeToChangelogFile="true"/>    
         
-    
 </databaseChangeLog>

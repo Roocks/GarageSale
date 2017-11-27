@@ -1,6 +1,8 @@
 package de.roocks.garagesale.resource;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -24,9 +26,21 @@ public class CustomerResource {
 	@POST
 	@Path("customer")
 	public void addCustomer (Customer customer) {
-		System.out.println("chkpoint 1");
-		customerService.addCustomer(customer);
+		customerService.storeCustomer(customer);
 	}
+	
+	@GET
+	@Path("customer")
+	public Customer getCustomerById(@QueryParam("id") Long id) {
+		return customerService.getCustomerById(id);
+	}
+	
+	@DELETE
+	@Path("customer")
+	public void deleteCustomerById(@QueryParam("id") Long id) {
+		customerService.deleteCustomerById(id);
+	}
+	
 	
 	@PUT
 	@Path("customer")

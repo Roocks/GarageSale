@@ -3,6 +3,7 @@ package de.roocks.garagesale.jpa;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -51,6 +52,9 @@ public class CustomerEntity {
 			inverseJoinColumns = {@JoinColumn (name = "address_id", referencedColumnName = "id")}
 			)
 	List<AddressEntity> addresses = new ArrayList<AddressEntity>();
+	
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+	List<ParcelEntity> parcels = new ArrayList<ParcelEntity>();
 	
 	public CustomerEntity() {
 		super();
@@ -113,22 +117,6 @@ public class CustomerEntity {
 		this.email = email;
 	}
 
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getSecondname() {
-		return secondname;
-	}
-
-	public void setSecondname(String secondname) {
-		this.secondname = secondname;
-	}
-
 	public List<AddressEntity> getAddresses() {
 		return addresses;
 	}
@@ -144,6 +132,12 @@ public class CustomerEntity {
 	public void setMainaddress(AddressEntity mainaddress) {
 		this.mainaddress = mainaddress;
 	}
-	
-	
+
+	public List<ParcelEntity> getParcels() {
+		return parcels;
+	}
+
+	public void setParcels(List<ParcelEntity> parcels) {
+		this.parcels = parcels;
+	}
 }

@@ -4,7 +4,7 @@ public class Foto {
 	
 	private Long id;
 	private byte[] foto;
-	private Long product_id;
+	private Long productId;
 	
 	public Foto() {
 		super();
@@ -14,7 +14,7 @@ public class Foto {
 		super();
 		this.id = id;
 		this.foto = foto;
-		this.product_id = productId;
+		this.productId = productId;
 	}
 
 	public Long getId() {
@@ -34,10 +34,10 @@ public class Foto {
 	}
 
 	public Long getProductId() {
-		return product_id;
+		return productId;
 	}
 
 	public void setProductId(Long productId) {
-		this.product_id = productId;
+		this.productId = productId;
 	}
 }

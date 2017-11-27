@@ -1,5 +1,6 @@
 package de.roocks.garagesale.jpa;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,11 +20,12 @@ public class FotoEntity {
 	private Long id;
 	
 	@Lob
+	@Column(name = "foto")
 	private byte[] foto;
 	
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "product_id")
-//	private ProductEntity productEntity;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id")
+	private ProductEntity productEntity;
 	
 	// getters/setters
 	public Long getId() {
@@ -42,11 +44,11 @@ public class FotoEntity {
 		this.foto = foto;
 	}
 
-//	public ProductEntity getProductEntity() {
-//		return productEntity;
-//	}
-//
-//	public void setProductEntity(ProductEntity productEntity) {
-//		this.productEntity = productEntity;
-//	}
+	public ProductEntity getProductEntity() {
+		return productEntity;
+	}
+
+	public void setProductEntity(ProductEntity productEntity) {
+		this.productEntity = productEntity;
+	}
 }

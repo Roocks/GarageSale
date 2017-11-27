@@ -2,6 +2,7 @@ package de.roocks.garagesale.model;
 
 public class Address {
 	
+	
 	private Long id;
 	private String country;
 	private String city;
@@ -14,9 +15,10 @@ public class Address {
 		super();
 	}
 
-	public Address(String country, String city, String street, String housenumber, String postcode,
+	public Address(Long id, String country, String city, String street, String housenumber, String postcode,
 			String additionalinfo) {
 		super();
+		this.id = id;
 		this.country = country;
 		this.city = city;
 		this.street = street;

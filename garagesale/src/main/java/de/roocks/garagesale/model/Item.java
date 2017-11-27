@@ -1,23 +1,22 @@
 package de.roocks.garagesale.model;
 
 public class Item {
-private Long id;
 	
+	private Long id;	
 	private int amount;
-	private Long parcel_id;
-	private Long product_id;
+	private Long parcelId;
+	private Long productId;
 	
 	public Item() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public Item(Long id, int amount, Long parcel_id, Long product_id) {
 		super();
 		this.id = id;
 		this.amount = amount;
-		this.parcel_id = parcel_id;
-		this.product_id = product_id;
+		this.parcelId = parcel_id;
+		this.productId = product_id;
 	}
 
 	public Long getId() {
@@ -32,16 +31,16 @@ private Long id;
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-	public Long getParcel_id() {
-		return parcel_id;
+	public Long getParcelId() {
+		return parcelId;
 	}
-	public void setParcel_id(Long parcel_id) {
-		this.parcel_id = parcel_id;
+	public void setParcelId(Long parcelId) {
+		this.parcelId = parcelId;
 	}
-	public Long getProduct_id() {
-		return product_id;
+	public Long getProductId() {
+		return productId;
 	}
-	public void setProduct_id(Long product_id) {
-		this.product_id = product_id;
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 }
