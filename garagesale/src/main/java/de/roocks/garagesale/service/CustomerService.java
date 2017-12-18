@@ -73,7 +73,7 @@ public class CustomerService {
 		Address mainaddress  = as.convertEntitiyToAddress(entity.getMainaddress());
 
 		// Customer
-		Customer customer = new Customer(entity.getId(), entity.getUsername(), entity.getPassword(), entity.getFirstName(), entity.getSecondName(), entity.getEmail(), mainaddress, addresses, parcelIds);
+		Customer customer = new Customer(entity.getId(), entity.getUsername(), entity.getPassword(), entity.getFirstname(), entity.getSecondname(), entity.getEmail(), mainaddress, addresses, parcelIds);
 		return customer;
 	}
 }

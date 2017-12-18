@@ -5,16 +5,27 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 
 import de.roocks.garagesale.model.Address;
+import lombok.Data;
 
+
+@Data
 @Entity
 @Table (name ="address")
+@NamedQueries ({
+	@NamedQuery (name = AddressEntity.QUERY_GET_ALL, query = "SELECT c FROM AddressEntity c")
+	
+})
 public class AddressEntity {
 	
 	@Id
@@ -42,6 +53,12 @@ public class AddressEntity {
 	@ManyToMany(mappedBy = "addresses")
 	List<CustomerEntity> customers = new ArrayList<CustomerEntity>();
 	
+	public static final String QUERY_GET_ALL = "AddressEntity.findAll";
+	public static TypedQuery<AddressEntity> GET_ALL(EntityManager em){
+		TypedQuery<AddressEntity> query = em.createNamedQuery(QUERY_GET_ALL, AddressEntity.class);
+		return query;
+	}
+	
 	public AddressEntity() {
 		super();
 	}
@@ -54,62 +71,5 @@ public class AddressEntity {
 		this.housenumber = address.getHousenumber();
 		this.postcode = address.getPostcode();
 		this.additionalinfo = address.getAdditionalinfo();
-	}
-
-	// getters/setters
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public String getCountry() {
-		return country;
-	}
-	
-	public void setCountry(String country) {
-		this.country = country;
-	}
-	
-	public String getCity() {
-		return city;
-	}
-	
-	public void setCity(String city) {
-		this.city = city;
-	}
-	
-	public String getStreet() {
-		return street;
-	}
-	
-	public void setStreet(String street) {
-		this.street = street;
-	}
-	
-	public String getHousenumber() {
-		return housenumber;
-	}
-	
-	public void setHousenumber(String housenumber) {
-		this.housenumber = housenumber;
-	}
-	
-	public String getPostcode() {
-		return postcode;
-	}
-	
-	public void setPostcode(String postcode) {
-		this.postcode = postcode;
-	}
-	
-	public String getAdditionalInfo() {
-		return additionalinfo;
-	}
-	
-	public void setAdditionalInfo(String additionalInfo) {
-		this.additionalinfo = additionalInfo;
 	}
 }

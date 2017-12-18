@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.Data;
+
+@Data
 public class Parcel {
 	
 	private Long id;
@@ -22,38 +25,6 @@ public class Parcel {
 		this.id = id;
 		this.timestamp = timestamp;
 		this.customerId = customerId;
-		this.items = items;
-	}
-
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public Date getTimestamp() {
-		return timestamp;
-	}
-	
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
-	
-	public Long getCustomerId() {
-		return customerId;
-	}
-	
-	public void setCustomerId(Long customerId) {
-		this.customerId = customerId;
-	}
-
-	public List<Item> getItems() {
-		return items;
-	}
-
-	public void setItems(List<Item> items) {
 		this.items = items;
 	}
 }

@@ -1,5 +1,7 @@
 package de.roocks.garagesale.resource;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -21,6 +23,11 @@ public class AddressResource {
 	
 	@Autowired
 	private AddressService addressService;
+	
+	@GET
+	public List<Address> getAllAddresses() {
+		return addressService.getAllAddresses();
+	}
 	
 	@POST
 	@Path("address")

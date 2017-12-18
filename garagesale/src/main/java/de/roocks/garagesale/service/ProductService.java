@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +49,19 @@ public class ProductService {
 			em.remove(entity);
 	}
 
+	public List<Product> getAllProducts() {
+		TypedQuery<ProductEntity> query = ProductEntity.GET_ALL(em);
+		List<Product> productList = new ArrayList<Product>();
+		for (ProductEntity entity : query.getResultList()) {
+			productList.add(convertEntityToProduct(entity));
+		}
+		return productList;
+	}
+	
 	public Product convertEntityToProduct(ProductEntity entity) {
 		if (entity == null)
 			return null;
-		CustomerEntity buyer = entity.getBuyerId();
+		CustomerEntity buyer = entity.getBuyer();
 		List<Long> fotosIds = new ArrayList<Long>();
 		for (FotoEntity fotoEntity : entity.getFotos()) {
 			fotosIds.add(fotoEntity.getId());
@@ -63,4 +73,5 @@ public class ProductService {
 		return new Product(entity.getId(), entity.getName(), entity.getDescription(), entity.getPrice(), fotosIds,
 				entity.getSeller().getId());
 	}
+
 }

@@ -8,9 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import de.roocks.garagesale.model.Category;
+import lombok.Data;
 
 @Entity
 @Table (name = "category")
+@Data
 public class CategoryEntity {
 
 	@Id
@@ -29,29 +31,5 @@ public class CategoryEntity {
 		super();
 		this.name = category.getName();
 		this.description = category.getDescription();
-	}
-	// getters/setters
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-	
-	public void setDescription(String description) {
-		this.description = description;
 	}
 }

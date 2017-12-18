@@ -3,6 +3,9 @@ package de.roocks.garagesale.model;
 import java.math.BigDecimal;
 import java.util.List;
 
+import lombok.Data;
+
+@Data
 public class Product {
 	
 	private Long id;	
@@ -36,52 +39,4 @@ public class Product {
 		this.fotoIds = fotoIds;
 		this.seller_id = seller_id;
 	}
-
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public BigDecimal getPrice() {
-		return price;
-	}
-	public void setPrice(BigDecimal price) {
-		this.price = price;
-	}
-	public Long getSeller_id() {
-		return seller_id;
-	}
-	public void setSeller_id(Long seller_id) {
-		this.seller_id = seller_id;
-	}
-
-	public List<Long> getFotoIds() {
-		return fotoIds;
-	}
-
-	public void setFotoIds(List<Long> fotosIds) {
-		this.fotoIds = fotosIds;
-	}
-
-	public Long getBuyer_id() {
-		return buyer_id;
-	}
-
-	public void setBuyer_id(Long buyer_id) {
-		this.buyer_id = buyer_id;
-	}
-	
 }
