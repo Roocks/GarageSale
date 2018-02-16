@@ -25,7 +25,6 @@
 			<column name="secondname" type="varchar(20)"></column>
 			<column name="email" type="varchar(30)"></column>
 			<column name="address_id" type="BIGINT"><constraints foreignKeyName="address_fk1" referencedTableName="address" referencedColumnNames="id"/></column>
-			<column name="deliveryaddress_id" type="BIGINT"><constraints foreignKeyName="deliveryaddress_fk1" referencedTableName="address" referencedColumnNames="id"/></column>	
 		</createTable>
 
 		<!-- product -->

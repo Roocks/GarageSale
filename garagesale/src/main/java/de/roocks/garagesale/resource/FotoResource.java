@@ -1,16 +1,22 @@
 package de.roocks.garagesale.resource;
 
+import java.net.URI;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import de.roocks.garagesale.exception.EntityNotFoundException;
 import de.roocks.garagesale.service.FotoService;
 
 @Path("fotos")
@@ -22,20 +28,27 @@ public class FotoResource {
 	private FotoService fotoService;
 
 	@POST
-	@Path("foto")
-	public void storeFoto(byte[] data, @HeaderParam("ProductID") Long productId) {
-		fotoService.storeFoto(productId, data);
+	public Response storeFoto(byte[] data, @HeaderParam ("productId") Long productId, @Context UriInfo uriInfo) {
+		Long id = fotoService.storeFoto(productId, data);
+		if (id == null)
+			throw new EntityNotFoundException("Foto could not be saved. Product by id = " + productId +" not found");
+		URI resource = uriInfo.getAbsolutePathBuilder().path(Long.toString(id)).build();
+		return Response.created(resource).build();
 	}
-	
+
 	@GET
-	@Path("foto")
-	public byte[] getFoto(@QueryParam ("id") Long id) {
-		return fotoService.getFoto(id);
+	@Path("{id}")
+	public Response getFoto(@PathParam("id") Long id) throws EntityNotFoundException {
+		byte[] foto = fotoService.getFoto(id);
+		if (foto == null)
+			throw new EntityNotFoundException("Foto by id = " + id + " not found.");
+		return Response.ok(foto).build();
 	}
-	
+
 	@DELETE
-	@Path("foto")
-	public void deleteFoto(@QueryParam ("id") Long id) {
+	@Path("{id}")
+	public Response deleteFoto(@PathParam("id") Long id) {
 		fotoService.deleteFoto(id);
+		return Response.ok().build();
 	}
 }

@@ -8,5 +8,7 @@ public class JaxRsConfig extends ResourceConfig {
 
 	public  JaxRsConfig() {
 		packages("de.roocks.garagesale.resource");
+		packages("de.roocks.garagesale.exception");
+
 	}	
 }

@@ -23,7 +23,7 @@ public class GSExceptionMapper implements ExceptionMapper<WebApplicationExceptio
 					.type(MediaType.APPLICATION_JSON_TYPE)
 					.build();
 		}
-		
+		resourceError.setMessage("Internal Server Error");
 		return Response
 				.status(503)
 				.entity(resourceError)

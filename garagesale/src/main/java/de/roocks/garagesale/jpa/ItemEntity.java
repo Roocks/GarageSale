@@ -12,9 +12,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import de.roocks.garagesale.model.Item;
-import lombok.Data;
 
-@Data
+
 @Entity
 @Table (name = "parcel_item")
 public class ItemEntity {
@@ -38,8 +37,42 @@ public class ItemEntity {
 		super();
 	}
 	
-	public ItemEntity(Item item) {
+	public ItemEntity(Item item, ParcelEntity parcelEntity, ProductEntity productEntity) {
 		super();
 		this.amount = item.getAmount();
+		this.parcelEntity = parcelEntity;
+		this.productEntity = productEntity;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public int getAmount() {
+		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
+	public ParcelEntity getParcelEntity() {
+		return parcelEntity;
+	}
+
+	public void setParcelEntity(ParcelEntity parcelEntity) {
+		this.parcelEntity = parcelEntity;
+	}
+
+	public ProductEntity getProductEntity() {
+		return productEntity;
+	}
+
+	public void setProductEntity(ProductEntity productEntity) {
+		this.productEntity = productEntity;
 	}
 }

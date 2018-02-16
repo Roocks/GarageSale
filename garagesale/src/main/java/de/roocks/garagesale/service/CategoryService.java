@@ -17,24 +17,25 @@ public class CategoryService {
 	private EntityManager em;
 
 	public Category getCategoryById(Long id) {
-		CategoryEntity entity = em.find(CategoryEntity.class, id);
-		return convertEntityToCategory(entity);
+		CategoryEntity categoryEntity = em.find(CategoryEntity.class, id);
+		return mapEntityToCategory(categoryEntity);
 	}
 
 	public void deleteCategoryById(Long id) {
-		CategoryEntity entity = em.find(CategoryEntity.class, id);
-		if (entity != null)
-			em.remove(entity);
+		CategoryEntity categoryEntity = em.find(CategoryEntity.class, id);
+		if (categoryEntity != null)		
+			em.remove(categoryEntity);
 	}
 
-	public void storeCategory(Category category) {
-		CategoryEntity entity = new CategoryEntity(category);
-		em.persist(entity);
+	public Long storeCategory(Category category) {
+		CategoryEntity categoryEntity = new CategoryEntity(category);
+		em.persist(categoryEntity);
+		return categoryEntity.getId();
 	}
 
-	public Category convertEntityToCategory(CategoryEntity entity) {
-		if (entity == null)
+	public Category mapEntityToCategory(CategoryEntity categoryEntity) {
+		if (categoryEntity == null)
 			return null;
-		return new Category(entity.getId(), entity.getName(), entity.getDescription());
+		return new Category(categoryEntity.getId(), categoryEntity.getName(), categoryEntity.getDescription());
 	}
 }

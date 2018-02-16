@@ -1,11 +1,9 @@
 package de.roocks.garagesale.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,38 +18,47 @@ public class AddressService {
 	@PersistenceContext
 	private EntityManager em;
 
-	public void storeAddress(Address address) {
-		AddressEntity entity = new AddressEntity(address);
-		em.persist(entity);
-	}
-
 	public Address getAddressById(Long id) {
-		AddressEntity entity = em.find(AddressEntity.class, id);
-		return convertEntitiyToAddress(entity);
+		AddressEntity addressEntity = em.find(AddressEntity.class, id);
+		return mapEntityToAddress(addressEntity);
 	}
-
+	
+	public Long storeAddress(Address address) {
+		AddressEntity addressEntity = new AddressEntity(address);
+		em.persist(addressEntity);
+		return addressEntity.getId();
+	}
+	
 	public void deleteAddressById(Long id) {
-		AddressEntity entity = em.find(AddressEntity.class, id);
-		if (entity != null)
-			em.remove(entity);
+		AddressEntity addressEntity = em.find(AddressEntity.class, id);
+		if (addressEntity != null) 
+			em.remove(addressEntity);
 	}
 	
-	public List<Address> getAllAddresses() {
-		TypedQuery<AddressEntity> query = AddressEntity.GET_ALL(em);
-		List<Address> addressList = new ArrayList<Address>();
-		for (AddressEntity entity : query.getResultList()) {
-			addressList.add(convertEntitiyToAddress(entity));
-		}
-		return addressList;
-	}
-	
-	public Address convertEntitiyToAddress(AddressEntity entity) {
-		if (entity == null)
-			return null;
-		
-		Address address = new Address(entity.getId(), entity.getCountry(), entity.getCity(), entity.getStreet(),
-				entity.getHousenumber(), entity.getPostcode(), entity.getAdditionalinfo());
+	public Address mapEntityToAddress(AddressEntity addressEntity) {
+		if (addressEntity == null)
+			return null;	
+		Address address = new Address(addressEntity.getId(), addressEntity.getCountry(), addressEntity.getCity(), addressEntity.getStreet(),
+				addressEntity.getHousenumber(), addressEntity.getPostcode(), addressEntity.getAdditionalinfo());
 		return address;
+	}
+	
+	/**
+	 * Speichert die Addresse, falls die noch nicht in der DB vorhanden ist.
+	 * 
+	 */
+	public AddressEntity getAddressIfExists(AddressEntity address) {
+		
+		List<AddressEntity> addresses = AddressEntity.GET_ALL(em).getResultList();
+		AddressEntity result = addresses.stream().filter(x -> address.getCountry().equals(x.getCountry()))
+				.filter(x -> address.getCity().equals(x.getCity()))
+				.filter(x -> address.getStreet().equals(x.getStreet()))
+				.filter(x -> address.getHousenumber().equals(x.getHousenumber()))
+				.findAny()
+				.orElse(address);
+		if (result.getId() == null)
+			em.persist(result);
+		return result;
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,41 +22,36 @@ public class ParcelService {
 
 	@PersistenceContext
 	private EntityManager em;
+	
+	@Autowired
+	private ItemService itemService;
 
-	public void storeParcel(Parcel parcel) {
-		CustomerEntity customer = em.find(CustomerEntity.class, parcel.getCustomerId());
-		if (customer != null) {
-			
-			ParcelEntity entity = new ParcelEntity();
-			
-//			for (Item i : parcel.getItems()) {
-//				entity.addItem(em.find(ItemEntity.class, i.getId()));
-//			}
-			
-			entity.setCustomer(customer);
-			em.persist(entity);
-		}
+	public Long storeParcel(Parcel parcel) {
+		CustomerEntity customerEntity = em.find(CustomerEntity.class, parcel.getCustomerId());
+		if (customerEntity == null)
+			return null;
+		ParcelEntity parcelEntity = new ParcelEntity();
+		parcelEntity.setCustomer(customerEntity);
+		em.persist(parcelEntity);
+		return parcelEntity.getId();
 	}
 
 	public Parcel getParcelById(Long id) {
-		ParcelEntity entity = em.find(ParcelEntity.class, id);
-		return convertEntityToParcel(entity);
-	}
-
-	private Parcel convertEntityToParcel(ParcelEntity entity) {
-		
-		ItemService is = new ItemService();
-		List<Item> items = new ArrayList<Item>();
-		
-		for(ItemEntity e : entity.getItems()) {
-			items.add(is.convertEntityToItem(e));
-		}
-		Parcel parcel = new Parcel(entity.getId(), entity.getTimestamp(), entity.getCustomer().getId(), items);
-		return parcel;
+		ParcelEntity parcelEntity = em.find(ParcelEntity.class, id);
+		return mapEntityToParcel(parcelEntity);
 	}
 
 	public void deleteParcelById(Long id) {
-		ParcelEntity entity = em.find(ParcelEntity.class, id);
-		em.remove(entity);
+		ParcelEntity parcelEntity = em.find(ParcelEntity.class, id);
+		em.remove(parcelEntity);
+	}
+	
+	private Parcel mapEntityToParcel(ParcelEntity parcelEntity) {		
+		List<Item> items = new ArrayList<Item>();
+		for (ItemEntity itemEntity : parcelEntity.getItems()) {
+			items.add(itemService.mapEntityToItem(itemEntity));
+		}
+		Parcel parcel = new Parcel(parcelEntity.getId(), parcelEntity.getTimestamp(), parcelEntity.getCustomer().getId(), items);
+		return parcel;
 	}
 }

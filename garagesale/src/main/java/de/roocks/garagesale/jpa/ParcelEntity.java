@@ -15,9 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "parcel")
 public class ParcelEntity {
@@ -48,5 +46,37 @@ public class ParcelEntity {
 	public void removeItem(ItemEntity item) {
 		items.remove(item);
 		item.setParcelEntity(null);
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public CustomerEntity getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(CustomerEntity customer) {
+		this.customer = customer;
+	}
+
+	public List<ItemEntity> getItems() {
+		return items;
+	}
+
+	public void setItems(List<ItemEntity> items) {
+		this.items = items;
 	}
 }

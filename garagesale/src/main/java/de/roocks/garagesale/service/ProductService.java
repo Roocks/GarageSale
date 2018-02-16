@@ -5,11 +5,11 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import de.roocks.garagesale.exception.EntityNotFoundException;
 import de.roocks.garagesale.jpa.CustomerEntity;
 import de.roocks.garagesale.jpa.FotoEntity;
 import de.roocks.garagesale.jpa.ProductEntity;
@@ -22,56 +22,42 @@ public class ProductService {
 	@PersistenceContext
 	private EntityManager em;
 
-	public void storeProduct(Product product) {
+	public Long storeProduct(Product product) {
 
-		CustomerEntity seller = em.find(CustomerEntity.class, product.getSeller_id());
-		if (seller == null)
-			return;
-		ProductEntity productEntity = new ProductEntity();
-		productEntity.setPrice(product.getPrice());
-		productEntity.setName(product.getName());
-		productEntity.setDescription(product.getDescription());
-		productEntity.setSeller(seller);
-		for (Long id : product.getFotoIds()) {
-			productEntity.addFoto(em.find(FotoEntity.class, id));
-		}
+		CustomerEntity customerEntity = em.find(CustomerEntity.class, product.getSellerId());
+		if (customerEntity == null)
+			throw new EntityNotFoundException("Product can not be saved. Customer by id = " + product.getSellerId() + " not found");
+		ProductEntity productEntity = new ProductEntity(product);
+		productEntity.setSeller(customerEntity);
 		em.persist(productEntity);
+		return productEntity.getId();
 	}
 
 	public Product getProductById(Long id) {
-		ProductEntity entity = em.find(ProductEntity.class, id);
-		return convertEntityToProduct(entity);
+		ProductEntity productEntity = em.find(ProductEntity.class, id);
+		return maptEntityToProduct(productEntity);
 	}
 
 	public void deleteProductById(Long id) {
-		ProductEntity entity = em.find(ProductEntity.class, id);
-		if (entity != null)
-			em.remove(entity);
-	}
-
-	public List<Product> getAllProducts() {
-		TypedQuery<ProductEntity> query = ProductEntity.GET_ALL(em);
-		List<Product> productList = new ArrayList<Product>();
-		for (ProductEntity entity : query.getResultList()) {
-			productList.add(convertEntityToProduct(entity));
-		}
-		return productList;
+		ProductEntity productEntity = em.find(ProductEntity.class, id);
+		if (productEntity != null)
+			em.remove(productEntity);
 	}
 	
-	public Product convertEntityToProduct(ProductEntity entity) {
-		if (entity == null)
+	public Product maptEntityToProduct(ProductEntity productEntity) {
+		if (productEntity == null)
 			return null;
-		CustomerEntity buyer = entity.getBuyer();
+		CustomerEntity buyer = productEntity.getBuyer();
 		List<Long> fotosIds = new ArrayList<Long>();
-		for (FotoEntity fotoEntity : entity.getFotos()) {
+		for (FotoEntity fotoEntity : productEntity.getFotos()) {
 			fotosIds.add(fotoEntity.getId());
 		}
 
 		if (buyer != null)
-			return new Product(entity.getId(), entity.getName(), entity.getDescription(), entity.getPrice(), fotosIds,
-					entity.getSeller().getId(), buyer.getId());
-		return new Product(entity.getId(), entity.getName(), entity.getDescription(), entity.getPrice(), fotosIds,
-				entity.getSeller().getId());
+			return new Product(productEntity.getId(), productEntity.getName(), productEntity.getDescription(), productEntity.getPrice(), fotosIds,
+					productEntity.getSeller().getId(), buyer.getId());
+		return new Product(productEntity.getId(), productEntity.getName(), productEntity.getDescription(), productEntity.getPrice(), fotosIds,
+				productEntity.getSeller().getId());
 	}
 
 }

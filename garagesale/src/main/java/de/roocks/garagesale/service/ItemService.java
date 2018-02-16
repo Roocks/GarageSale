@@ -2,6 +2,7 @@ package de.roocks.garagesale.service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,33 +18,33 @@ public class ItemService {
 	@PersistenceContext
 	private EntityManager em;
 
-	public void storeItem(Item item) {
-		ParcelEntity parcel = em.find(ParcelEntity.class, item.getParcelId());
-		ProductEntity product = em.find(ProductEntity.class, item.getProductId());
-		if (parcel != null && product != null) {
-			ItemEntity entity = new ItemEntity();
-			entity.setAmount(item.getAmount());
-			entity.setParcelEntity(parcel);
-			entity.setProductEntity(product);
-			em.persist(entity);
-		}
+	public Long storeItem(Item item) {
+		
+		ParcelEntity parcelEntity = em.find(ParcelEntity.class, item.getParcelId());
+		ProductEntity productEntity = em.find(ProductEntity.class, item.getProductId());
+		if (productEntity == null || parcelEntity == null)
+			return null;	
+		
+		ItemEntity itemEntity = new ItemEntity(item, parcelEntity, productEntity);
+		em.persist(itemEntity);
+		return itemEntity.getId();
 	}
 
 	public Item getItemById(Long id) {
-		ItemEntity entity = em.find(ItemEntity.class, id);
-		return convertEntityToItem(entity);
+		ItemEntity itemEntity = em.find(ItemEntity.class, id);
+		return mapEntityToItem(itemEntity);
 	}
 
 	public void deleteItemById(Long id) {
-		ItemEntity entity = em.find(ItemEntity.class, id);
-		if (entity != null)
-			em.remove(entity);
+		ItemEntity itemEntity = em.find(ItemEntity.class, id);
+		if (itemEntity != null)
+			em.remove(itemEntity);
 	}
 
-	public Item convertEntityToItem(ItemEntity entity) {
-		if (entity == null)
+	public Item mapEntityToItem(ItemEntity itemEntity) {
+		if (itemEntity == null)
 			return null;
-		return new Item(entity.getId(), entity.getAmount(), entity.getParcelEntity().getId(),
-				entity.getProductEntity().getId());
+		return new Item(itemEntity.getId(), itemEntity.getAmount(), itemEntity.getParcelEntity().getId(),
+				itemEntity.getProductEntity().getId());
 	}
 }
